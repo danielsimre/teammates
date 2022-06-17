@@ -683,4 +683,14 @@ export class InstructorCourseEditPageComponent implements OnInit {
       this.statusMessageService.showErrorToast(resp.error.message);
     });
   }
+
+  openRevokeAllInstructorsAccessConfirmationModal(): void {
+    const modalContent = `Are you sure you want to revoke all access for all instructors in the course
+        ${this.courseId}?`;
+    this.simpleModalService.openConfirmationModal(
+      'Revoke?', SimpleModalType.DANGER, modalContent).result.then(() => {
+        //this.openRevokeAllInstructorsAccessFromCourse(this.courseId);
+      }, () => { });
+  }
 }
+

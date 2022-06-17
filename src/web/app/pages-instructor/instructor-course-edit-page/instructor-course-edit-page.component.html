@@ -86,6 +86,11 @@
       <i class="fa fa-info-circle" aria-hidden="true"></i>
       More about configuring access permissions
     </a>
+    <button id="btn-revoke-all" type="button" class="btn btn-danger btn-margin-right" (click)="openRevokeAllInstructorsAccessConfirmationModal()" 
+      value="Revoke All Instructors' Access" [disabled]="!currInstructorCoursePrivilege.canModifyInstructor || isRevokingAccess" >
+      <tm-ajax-loading *ngIf="isRevokingAccess"></tm-ajax-loading>
+      Revoke All Instructors' Access
+    </button>
   </div>
 </tm-loading-retry>
 
