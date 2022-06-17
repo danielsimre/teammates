@@ -47,24 +47,23 @@ class UpdateInstructorsPrivilegeAction extends Action {
         InstructorsPrivilegeUpdateRequest request = getAndValidateRequestBody(InstructorsPrivilegeUpdateRequest.class);
         InstructorPrivileges newPrivileges = request.getPrivileges();
         newPrivileges.validatePrivileges();
-        
+
         List<InstructorPrivileges> instructorPrivilegesList = new ArrayList<>();
         for (InstructorAttributes instructor : courseInstructors) {
+            // Do not change the privilege of the instructor that made the request
             // If the instructor has not joined the course, skip the google id check
-            if (instructor.getGoogleId() != null) {
-                // Do not change the privilege of the instructor that made the request
-                if (instructor.getGoogleId().equals(idOfUpdatingInstructor)) {
+            if (instructor.getGoogleId() != null
+                    && instructor.getGoogleId().equals(idOfUpdatingInstructor)) {
                 continue;
-                }
             }
-            
+
             // Since the request can contain any combination of privileges, set the role to custom
             instructor.setRole(Const.InstructorPermissionRoleNames.INSTRUCTOR_PERMISSION_ROLE_CUSTOM);
             instructor.setPrivileges(newPrivileges);
             logic.updateToEnsureValidityOfInstructorsForTheCourse(courseId, instructor);
 
             try {
-                instructor = logic.updateInstructor(
+                logic.updateInstructor(
                         InstructorAttributes
                                 .updateOptionsWithEmailBuilder(instructor.getCourseId(), instructor.getEmail())
                                 .withRole(instructor.getRole())
