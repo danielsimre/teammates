@@ -162,6 +162,7 @@ export class InstructorCourseEditPageComponent implements OnInit {
   hasInstructorsLoadingFailed: boolean = false;
   isSavingCourseEdit: boolean = false;
   isSavingNewInstructor: boolean = false;
+  isRevokingAccess: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -689,8 +690,42 @@ export class InstructorCourseEditPageComponent implements OnInit {
         ${this.courseId}?`;
     this.simpleModalService.openConfirmationModal(
       'Revoke?', SimpleModalType.DANGER, modalContent).result.then(() => {
-        //this.openRevokeAllInstructorsAccessFromCourse(this.courseId);
+        this.revokeAllInstructorsAccessFromCourse(this.courseId);
       }, () => { });
   }
-}
 
+  /**
+   * Revokes the access of all instructors in the course, except for the instructor doing the revoke.
+   */
+  revokeAllInstructorsAccessFromCourse(courseId: string): void {
+      this.isRevokingAccess = true;
+
+      const privileges: InstructorPrivileges = {
+        courseLevel: {
+          canModifyCourse: false,
+          canModifySession: false,
+          canModifyStudent: false,
+          canModifyInstructor: false,
+          canViewStudentInSections: false,
+          canModifySessionCommentsInSections: false,
+          canViewSessionInSections: false,
+          canSubmitSessionInSections: false,
+        },
+        sectionLevel: {},
+        sessionLevel: {},
+      };
+
+      this.instructorService.updateAllInstructorsPrivilege({
+        courseId: courseId,
+        instructorId: this.currInstructorGoogleId,
+        requestBody: { privileges },
+      }).subscribe(() => {
+        this.isRevokingAccess = false;
+        this.loadCourseInstructors();
+        this.statusMessageService.showSuccessToast(`All instructors' access rights have been revoked.`);
+      }, (resp: ErrorMessageOutput) => {
+        this.isRevokingAccess = false;
+        this.statusMessageService.showErrorToast(resp.error.message);
+      });
+  }
+}

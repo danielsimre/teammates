@@ -330,6 +330,7 @@ public final class Const {
         public static final String COURSE_SECTIONS = URI_PREFIX + "/course/sections";
         public static final String COURSES = URI_PREFIX + "/courses";
         public static final String INSTRUCTORS = URI_PREFIX + "/instructors";
+        public static final String INSTRUCTORS_PRIVILEGE = URI_PREFIX + "/instructors/privilege";
         public static final String INSTRUCTOR = URI_PREFIX + "/instructor";
         public static final String INSTRUCTOR_PRIVILEGE = URI_PREFIX + "/instructor/privilege";
         public static final String INSTRUCTOR_KEY = URI_PREFIX + "/instructor/key";
