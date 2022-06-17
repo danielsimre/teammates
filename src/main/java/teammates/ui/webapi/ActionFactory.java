@@ -61,6 +61,7 @@ public final class ActionFactory {
         map(ResourceURIs.COURSES, GET, GetCoursesAction.class);
         map(ResourceURIs.COURSE_SECTIONS, GET, GetCourseSectionNamesAction.class);
         map(ResourceURIs.INSTRUCTORS, GET, GetInstructorsAction.class);
+        map(ResourceURIs.INSTRUCTORS_PRIVILEGE, PUT, UpdateInstructorsPrivilegeAction.class);
         map(ResourceURIs.INSTRUCTOR, GET, GetInstructorAction.class);
         map(ResourceURIs.INSTRUCTOR, DELETE, DeleteInstructorAction.class);
         map(ResourceURIs.INSTRUCTOR_PRIVILEGE, GET, GetInstructorPrivilegeAction.class);

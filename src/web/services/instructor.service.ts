@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ResourceEndpoints } from '../types/api-const';
-import { Instructor, InstructorPrivilege, Instructors, RegenerateKey } from '../types/api-output';
-import { InstructorCreateRequest, InstructorPrivilegeUpdateRequest, Intent } from '../types/api-request';
+import { Instructor, InstructorPrivilege, Instructors, InstructorsPrivilege, RegenerateKey } from '../types/api-output';
+import { InstructorCreateRequest, InstructorPrivilegeUpdateRequest, InstructorsPrivilegeUpdateRequest, Intent } from '../types/api-request';
 import { HttpRequestService } from './http-request.service';
 
 /**
@@ -141,6 +141,22 @@ export class InstructorService {
       instructoremail: queryParams.instructorEmail,
     };
     return this.httpRequestService.put(ResourceEndpoints.INSTRUCTOR_PRIVILEGE, paramMap, queryParams.requestBody);
+  }
+
+  /**
+   * Updates the privilege of all instructors for a specified course, excluding the instructor
+   * making the request.
+   */
+   updateAllInstructorsPrivilege(queryParams: {
+    courseId: string,
+    instructorId: string,
+    requestBody: InstructorsPrivilegeUpdateRequest,
+  }): Observable<InstructorsPrivilege> {
+    const paramMap: any = {
+      courseid: queryParams.courseId,
+      instructorid: queryParams.instructorId,
+    };
+    return this.httpRequestService.put(ResourceEndpoints.INSTRUCTORS_PRIVILEGE, paramMap, queryParams.requestBody);
   }
 
   /**
